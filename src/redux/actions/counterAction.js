@@ -1,7 +1,4 @@
-export const ActionTypes = {
-  INCREMENT: 'count/increment',
-  DECREMENT: 'count/decrement',
-};
+import { ActionTypes } from './counterActionTypes';
 
 export const increment = (count) => {
   return {
