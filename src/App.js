@@ -2,11 +2,13 @@ import './App.css';
 import { connect, useDispatch, useSelector } from 'react-redux';
 import Counter from './components/Counter';
 import { decrement, increment } from './redux/actions/counterAction';
+import UserList from './components/UserList';
+import 'semantic-ui-css/semantic.min.css';
 
 function App(props) {
   const { countNumberProps, incrementProps } = props;
 
-  const countNumber = useSelector((state) => state.counter.countNumber);
+  const countNumber = useSelector((state) => state.counterReducer.countNumber);
   const dispatch = useDispatch();
 
   const handleIncrementConnectStore = () => {
@@ -37,11 +39,13 @@ function App(props) {
         countNumberProps={countNumberProps}
         incrementProps={incrementProps}
       />
+      <UserList />
+      <div className="ui divider"></div>
     </div>
   );
 }
 
-//Gán dispatch thành props
+//Gán dispatch to props
 const mapDispatchToProps = (dispatch) => {
   return {
     incrementProps: () => {
@@ -53,10 +57,10 @@ const mapDispatchToProps = (dispatch) => {
   };
 };
 
-//Gán giá trị của state thành props
+//Gán giá trị của state to props
 const mapStateToProps = (state, ownProps) => {
   return {
-    countNumberProps: state.counter.countNumber,
+    countNumberProps: state.counterReducer.countNumber,
   };
 };
 

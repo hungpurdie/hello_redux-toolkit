@@ -1,15 +1,11 @@
-import { INCREMENT, DECREMENT } from './counterActionTypes';
+import { CounterActionTypes } from './counterActionTypes';
 
-export const increment = (count) => {
-  return {
-    type: INCREMENT,
-    payload: count,
-  };
-};
+export const increment = (count) => ({
+  type: CounterActionTypes.INCREMENT,
+  payload: count,
+});
 
-export const decrement = (count) => {
-  return {
-    type: DECREMENT,
-    payload: count,
-  };
-};
+export const decrement = (count) => ({
+  type: CounterActionTypes.DECREMENT,
+  payload: count,
+});
