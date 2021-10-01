@@ -1,4 +1,4 @@
-import { ActionTypes } from '../actions/counterActionTypes';
+import { CounterActionTypes } from '../actions/counterActionTypes';
 
 const initialState = {
   countNumber: 0,
@@ -6,14 +6,14 @@ const initialState = {
 
 const counterReducer = (state = initialState, action) => {
   switch (action.type) {
-    case ActionTypes.INCREMENT: {
+    case CounterActionTypes.INCREMENT: {
       return {
         ...state,
         countNumber: state.countNumber + 1,
       };
     }
 
-    case ActionTypes.DECREMENT: {
+    case CounterActionTypes.DECREMENT: {
       return {
         ...state,
         countNumber: state.countNumber - 1,

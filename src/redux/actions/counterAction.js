@@ -1,15 +1,15 @@
-import { ActionTypes } from './counterActionTypes';
+import { INCREMENT, DECREMENT } from './counterActionTypes';
 
 export const increment = (count) => {
   return {
-    type: ActionTypes.INCREMENT,
+    type: INCREMENT,
     payload: count,
   };
 };
 
 export const decrement = (count) => {
   return {
-    type: ActionTypes.DECREMENT,
+    type: DECREMENT,
     payload: count,
   };
 };
