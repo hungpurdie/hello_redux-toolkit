@@ -5,7 +5,7 @@ import { decrement } from '../../redux/actions/counterAction';
 Counter.propTypes = {};
 
 function Counter(props) {
-  const count = useSelector((state) => state.counter.countNumber);
+  const count = useSelector((state) => state.counterReducer.countNumber);
 
   const dispatch = useDispatch();
 
