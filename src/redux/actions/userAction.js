@@ -18,21 +18,15 @@ export const fetchUserFailure = (errorMessage) => ({
 });
 
 export const fetchUsersAsync = () => {
-  return (dispatch) => {
+  return async (dispatch) => {
     dispatch(fetchUserStart());
-    axios
-      .get('https://jsonplaceholder.typicode.com/users')
-      .then((res) => {
-        const data = res.data.map((item) => ({
-          id: item.id,
-          username: item.username,
-          email: item.email,
-        }));
-        dispatch(fetchUserSuccess(data));
-      })
-
-      .catch((err) => {
-        dispatch(fetchUserFailure(err.errorMessage));
-      });
+    try {
+      const { data } = await axios.get(
+        'https://jsonplaceholder.typicode.com/users'
+      );
+      dispatch(fetchUserSuccess(data));
+    } catch (error) {
+      dispatch(fetchUserFailure(error.errorMessage));
+    }
   };
 };

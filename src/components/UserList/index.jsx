@@ -8,8 +8,6 @@ UserList.propTypes = {};
 function UserList(props) {
   const { users, fetchUsers, isFetching } = props;
 
-  console.log(props);
-
   useEffect(() => {
     fetchUsers();
   }, [fetchUsers]);
@@ -51,7 +49,7 @@ const mapStateToProps = (state, ownProps) => {
 
 const mapDispatchToProps = (dispatch) => {
   return {
-    fetchUsers: () => dispatch(fetchUsersAsync()),
+    fetchUsers: async () => dispatch(fetchUsersAsync()),
   };
 };
 

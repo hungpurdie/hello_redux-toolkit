@@ -13,7 +13,6 @@ const userReducer = (state = initialState, action) => {
         isFetching: true,
       };
     case UserActionTypes.FETCH_SUCCESS:
-      console.log(action.payload);
       return {
         ...state,
         isFetching: false,
