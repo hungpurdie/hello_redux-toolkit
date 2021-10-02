@@ -6,10 +6,10 @@ import UserList from './components/UserList';
 import 'semantic-ui-css/semantic.min.css';
 import TodoApp from './components/TodoApp';
 import { BrowserRouter as Router, Switch, Route, Link } from 'react-router-dom';
+import Login from './components/Login';
 
 function App(props) {
-  const { countNumberProps, incrementProps } = props;
-
+  const { countNumberProps, incrementProps, authProps } = props;
   const countNumber = useSelector((state) => state.counterReducer.countNumber);
   const dispatch = useDispatch();
 
@@ -59,7 +59,8 @@ function App(props) {
             <UserList />
           </Route>
           <Route path="/todo">
-            <TodoApp />
+            {!authProps?.token && <Login />}
+            {authProps?.token && <TodoApp />}
           </Route>
         </Switch>
       </Router>
@@ -83,6 +84,7 @@ const mapDispatchToProps = (dispatch) => {
 const mapStateToProps = (state, ownProps) => {
   return {
     countNumberProps: state.counterReducer.countNumber,
+    authProps: state.authReducer.token,
   };
 };
 
