@@ -11,19 +11,37 @@ export const loginSuccess = (token) => {
 export const login =
   ({ email, password }) =>
   async (dispatch) => {
-    const {
-      data: {
-        elements: { accessToken, refreshToken },
-      },
-    } = await axios.post("https://api-starter.up.railway.app/api/v1/auth/login", {
-      email,
-      password,
+    const data = await axios.post("http://13.250.46.59:8080/account/login", {
+      Username: email,
+      Password: password,
     });
-    dispatch(loginSuccess({ accessToken, refreshToken }));
+    if (data?.status === 200 && data?.data?.accessToken && data.data.refreshToken) {
+      dispatch(
+        loginSuccess({ accessToken: data.data.accessToken, refreshToken: data.data.refreshToken })
+      );
+    }
   };
+
+export const refreshTokenSuccess = (accessToken) => {
+  return {
+    type: AuthActionTypes.REFRESH_TOKEN_SUCCESS,
+    payload: accessToken,
+  };
+};
+
+export const refreshToken = (refreshToken) => async (dispatch) => {
+  const data = await axios.post("http://13.250.46.59:8080/auth/refresh-token", {
+    refreshToken,
+  });
+
+  if (data?.status === 200 && data?.data?.accessToken) {
+    dispatch(refreshTokenSuccess(data.data.accessToken));
+  }
+};
 
 export const logout = () => {
   return {
     type: AuthActionTypes.LOGOUT,
+    payload: null,
   };
 };

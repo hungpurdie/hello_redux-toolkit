@@ -1,7 +1,7 @@
 import "./App.css";
 import { connect, useDispatch, useSelector } from "react-redux";
 import Counter from "./components/Counter";
-import { decrement, increment } from "./redux/actions/counterAction";
+import { increment } from "./redux/actions/counterAction";
 import UserList from "./components/UserList";
 import "semantic-ui-css/semantic.min.css";
 import TodoApp from "./components/TodoApp";
