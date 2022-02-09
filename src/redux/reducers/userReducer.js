@@ -1,4 +1,4 @@
-const { UserActionTypes } = require('../actions/userActionTypes');
+const { UserActionTypes } = require('../actions/types/userActionTypes');
 
 const initialState = {
   users: [],

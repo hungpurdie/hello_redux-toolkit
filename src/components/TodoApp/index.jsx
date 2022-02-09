@@ -1,55 +1,61 @@
-import axios from 'axios';
-import React, { useEffect, useState } from 'react';
-import { connect } from 'react-redux';
-import { addTodo, fetchTodos, setTodos } from '../../redux/actions/todoAction';
+import React, { useCallback, useEffect, useState } from "react";
+import { useSelector, useDispatch } from "react-redux";
+import { getAllTodos } from "redux/selectors/todoSelector";
+import { addTodo, fetchTodos } from "../../redux/actions/todoAction";
+import { v4 as uuidv4 } from "uuid";
+import { useHistory } from "react-router-dom";
+import { logout } from "redux/actions/authAction";
+
 TodoApp.propTypes = {};
 
-function TodoApp({ todos, fetchTodosProps, addTodoProps }) {
-  const [text, setText] = useState('');
+function TodoApp() {
+  const dispatch = useDispatch();
+
+  const history = useHistory();
+
+  const allTodos = useSelector(getAllTodos);
+
+  const [text, setText] = useState("");
+
+  const fetchingTodos = useCallback(() => {
+    dispatch(fetchTodos());
+  }, [dispatch]);
+
   useEffect(() => {
-    fetchTodosProps();
-  }, [fetchTodosProps]);
+    fetchingTodos();
+  }, [fetchingTodos]);
+
+  const Logout = () => {
+    dispatch(logout());
+  };
 
   return (
     <div className="ui segment container">
-      <input
-        type="text"
-        value={text}
-        onChange={(e) => setText(e.target.value)}
-      />
+      <input type="text" value={text} onChange={(e) => setText(e.target.value)} />
       <button
         onClick={() => {
-          addTodoProps(text);
-          setText('');
+          dispatch(
+            addTodo({
+              userId: uuidv4(),
+              id: uuidv4(),
+              title: text,
+              completed: false,
+            })
+          );
+          setText("");
         }}
       >
         Add
       </button>
       <ul>
-        {todos?.map((todo) => (
-          <li key={todo.id}>{todo.title}</li>
+        {allTodos.slice(allTodos.length - 10, allTodos.length)?.map((todo, index) => (
+          <li key={index}>{todo.title}</li>
         ))}
       </ul>
+      <button onClick={Logout} className="ui inverted red button">
+        Logout
+      </button>
     </div>
   );
 }
-
-const mapStateToProps = (state, ownProps) => ({
-  todos: state.todoReducer.items,
-});
-
-//Gán dispatch to props
-const mapDispatchToProps = (dispatch) => {
-  return {
-    addTodoProps: (text) => {
-      dispatch(addTodo(text));
-    },
-    setTodoProps: (items) => {
-      dispatch(setTodos(items));
-    },
-    fetchTodosProps: async () => {
-      dispatch(fetchTodos());
-    },
-  };
-};
-export default connect(mapStateToProps, mapDispatchToProps)(TodoApp);
+export default TodoApp;

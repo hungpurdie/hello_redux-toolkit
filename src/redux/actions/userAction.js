@@ -1,5 +1,5 @@
 import axios from 'axios';
-import { UserActionTypes } from './userActionTypes';
+import { UserActionTypes } from './types/userActionTypes';
 
 export const fetchUserStart = () => ({
   type: UserActionTypes.FETCH_START,

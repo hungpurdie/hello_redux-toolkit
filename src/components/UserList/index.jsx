@@ -1,12 +1,20 @@
-import React, { useEffect } from 'react';
-import PropTypes from 'prop-types';
-import { fetchUsersAsync } from '../../redux/actions/userAction';
-import { connect } from 'react-redux';
+import React, { useCallback, useEffect } from "react";
+import PropTypes from "prop-types";
+import { fetchUsersAsync } from "../../redux/actions/userAction";
+import { connect, useDispatch, useSelector } from "react-redux";
+import { getAllUsers, getIsFetching } from "redux/selectors/userSelector";
 
 UserList.propTypes = {};
 
 function UserList(props) {
-  const { users, fetchUsers, isFetching } = props;
+  const users = useSelector(getAllUsers);
+  const isFetching = useSelector(getIsFetching);
+
+  const dispatch = useDispatch();
+
+  const fetchUsers = useCallback(() => {
+    dispatch(fetchUsersAsync());
+  }, [dispatch]);
 
   useEffect(() => {
     fetchUsers();
@@ -40,17 +48,4 @@ function UserList(props) {
   );
 }
 
-const mapStateToProps = (state, ownProps) => {
-  return {
-    users: state.userReducer.users,
-    isFetching: state.userReducer.isFetching,
-  };
-};
-
-const mapDispatchToProps = (dispatch) => {
-  return {
-    fetchUsers: async () => dispatch(fetchUsersAsync()),
-  };
-};
-
-export default connect(mapStateToProps, mapDispatchToProps)(UserList);
+export default UserList;

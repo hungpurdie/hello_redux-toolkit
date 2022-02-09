@@ -1,21 +1,18 @@
-import './App.css';
-import { connect, useDispatch, useSelector } from 'react-redux';
-import Counter from './components/Counter';
-import { decrement, increment } from './redux/actions/counterAction';
-import UserList from './components/UserList';
-import 'semantic-ui-css/semantic.min.css';
-import TodoApp from './components/TodoApp';
-import { BrowserRouter as Router, Switch, Route, Link } from 'react-router-dom';
-import Login from './components/Login';
+import "./App.css";
+import { connect, useDispatch, useSelector } from "react-redux";
+import Counter from "./components/Counter";
+import { decrement, increment } from "./redux/actions/counterAction";
+import UserList from "./components/UserList";
+import "semantic-ui-css/semantic.min.css";
+import TodoApp from "./components/TodoApp";
+import { BrowserRouter as Router, Switch, Route, Link } from "react-router-dom";
+import Login from "./components/Login";
 
 function App(props) {
-  const { countNumberProps, incrementProps, authProps } = props;
-  const countNumber = useSelector((state) => state.counterReducer.countNumber);
   const dispatch = useDispatch();
 
-  const handleIncrementConnectStore = () => {
-    incrementProps();
-  };
+  const countNumber = useSelector((state) => state.counterReducer.countNumber);
+  const auth = useSelector((state) => state.authReducer.token);
 
   const handleIncrementUseDispatch = () => {
     dispatch(increment());
@@ -40,18 +37,8 @@ function App(props) {
         <Switch>
           <Route exact path="/counter">
             <div className="ui divider">
-              <h1 style={{ color: 'green' }}>
-                Counter Parent connect store: {countNumberProps}
-              </h1>
-              <button onClick={handleIncrementConnectStore}>
-                Increment Parent connect store
-              </button>
-              <h1 style={{ color: 'orange' }}>
-                Counter Parent useSelector: {countNumber}
-              </h1>
-              <button onClick={handleIncrementUseDispatch}>
-                Increment Parent useDispatch
-              </button>
+              <h1 style={{ color: "orange" }}>Counter Parent useSelector: {countNumber}</h1>
+              <button onClick={handleIncrementUseDispatch}>Increment Parent useDispatch</button>
               <Counter />
             </div>
           </Route>
@@ -59,8 +46,8 @@ function App(props) {
             <UserList />
           </Route>
           <Route path="/todo">
-            {!authProps?.token && <Login />}
-            {authProps?.token && <TodoApp />}
+            {!auth?.accessToken && <Login />}
+            {auth?.accessToken && <TodoApp />}
           </Route>
         </Switch>
       </Router>
@@ -68,24 +55,4 @@ function App(props) {
   );
 }
 
-//Gán dispatch to props
-const mapDispatchToProps = (dispatch) => {
-  return {
-    incrementProps: () => {
-      dispatch(increment());
-    },
-    decrementProps: () => {
-      dispatch(decrement());
-    },
-  };
-};
-
-//Gán giá trị của state to props
-const mapStateToProps = (state, ownProps) => {
-  return {
-    countNumberProps: state.counterReducer.countNumber,
-    authProps: state.authReducer.token,
-  };
-};
-
-export default connect(mapStateToProps, mapDispatchToProps)(App);
+export default App;

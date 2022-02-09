@@ -1,5 +1,5 @@
 import axios from 'axios';
-import { TodoActionTypes } from './todoActionTypes';
+import { TodoActionTypes } from './types/todoActionTypes';
 
 export const addTodo = (text) => {
   return {

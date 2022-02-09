@@ -1,11 +1,12 @@
-import { combineReducers, createStore, applyMiddleware, compose } from 'redux';
-import thunk from 'redux-thunk';
-import counterReducer from './reducers/counterReducer';
-import userReducer from './reducers/userReducer';
-import todoReducer from './reducers/todoReducer';
-import authReducer from './reducers/authReducer';
-import { persistStore, persistReducer } from 'redux-persist';
-import storage from 'redux-persist/lib/storage';
+import { combineReducers, createStore, applyMiddleware, compose } from "redux";
+import thunk from "redux-thunk";
+import counterReducer from "./reducers/counterReducer";
+import userReducer from "./reducers/userReducer";
+import todoReducer from "./reducers/todoReducer";
+import authReducer from "./reducers/authReducer";
+import { persistStore, persistReducer } from "redux-persist";
+import storage from "redux-persist/lib/storage";
+
 const rootReducer = combineReducers({
   counterReducer,
   userReducer,
@@ -14,16 +15,16 @@ const rootReducer = combineReducers({
 });
 
 const persistConfig = {
-  key: 'root',
+  key: "root",
   storage,
-  whitelist: ['authReducer', 'token'],
+  whitelist: ["authReducer", "token"],
 };
 
 const persistedReducer = persistReducer(persistConfig, rootReducer);
 
 const myMiddleware = (store) => (next) => (action) => {
-  if (action.type === 'todo/add' && action.payload === 'fuck') {
-    action.payload = '****';
+  if (action.type === "todo/add" && action.payload === "fuck") {
+    action.payload = "****";
   }
   return next(action);
 };
@@ -48,10 +49,7 @@ const myMiddleware = (store) => (next) => (action) => {
 
 const middlewares = [thunk, myMiddleware];
 const composeEnhancer = window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose;
-const store = createStore(
-  persistedReducer,
-  composeEnhancer(applyMiddleware(...middlewares))
-);
+const store = createStore(persistedReducer, composeEnhancer(applyMiddleware(...middlewares)));
 
 export const persistor = persistStore(store);
 

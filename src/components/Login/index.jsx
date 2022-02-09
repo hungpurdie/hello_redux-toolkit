@@ -1,19 +1,21 @@
-import React, { useState } from 'react';
-import PropTypes from 'prop-types';
-import { connect } from 'react-redux';
-import { login } from '../../redux/actions/authAction';
+import React, { useState } from "react";
+import PropTypes from "prop-types";
+import { useDispatch } from "react-redux";
+import { login } from "../../redux/actions/authAction";
 
 Login.propTypes = {};
 
 function Login({ loginProps }) {
-  const [email, setEmail] = useState('');
-  const [password, setPassword] = useState('');
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+
+  const dispatch = useDispatch();
 
   return (
     <form
       onSubmit={(e) => {
         e.preventDefault();
-        loginProps({ email, password });
+        dispatch(login({ email, password }));
       }}
     >
       <input
@@ -32,12 +34,4 @@ function Login({ loginProps }) {
     </form>
   );
 }
-
-const mapDispatchToProps = (dispatch) => {
-  return {
-    loginProps: async ({ email, password }) =>
-      dispatch(login({ email, password })),
-  };
-};
-
-export default connect(null, mapDispatchToProps)(Login);
+export default Login;
