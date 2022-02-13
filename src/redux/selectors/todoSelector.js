@@ -1,2 +1,1 @@
-export const getAllTodos = (state) => state.todoReducer.items;
-
+export const getAllTodos = (state) => state.todos.items;

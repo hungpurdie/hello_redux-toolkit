@@ -1,47 +1,95 @@
-import axios from "axios";
-import { AuthActionTypes } from "./types/authActionTypes";
+import authApi from "apis/authApi";
+import { AuthActionTypes } from "./types/auth";
+
+export const loginStart = () => {
+  return {
+    type: AuthActionTypes.LOGIN_START,
+  };
+};
+
+export const loginFailure = (message) => {
+  return {
+    type: AuthActionTypes.LOGIN_FAILURE,
+    payload: message,
+  };
+};
 
 export const loginSuccess = (token) => {
   return {
     type: AuthActionTypes.LOGIN_SUCCESS,
+    payload: {
+      accessToken: token.accessToken,
+      refreshToken: token.refreshToken,
+    },
+  };
+};
+
+export const login = (user) => async (dispatch) => {
+  dispatch(loginStart());
+
+  const data = await authApi.login(user);
+
+  if (data?.accessToken && data?.refreshToken) {
+    dispatch(loginSuccess(data));
+  } else {
+    const { result } = data;
+    dispatch(loginFailure({ message: result }));
+  }
+};
+
+export const loginByGoogle = (tokenId) => async (dispatch) => {
+  dispatch(loginStart());
+
+  const data = await authApi.loginWithGoogle(tokenId);
+
+  if (data?.accessToken && data?.refreshToken) {
+    const { accessToken, refreshToken } = data;
+    dispatch(
+      loginSuccess({
+        accessToken,
+        refreshToken,
+      })
+    );
+  } else {
+    const { result } = data?.data;
+    dispatch(loginFailure({ message: result }));
+  }
+};
+
+export const refreshToken = (refreshToken) => async (dispatch) => {
+  const data = await authApi.refreshToken(refreshToken);
+
+  if (data?.accessToken) {
+    const { accessToken } = data;
+    dispatch(refreshTokenSuccess(accessToken));
+  }
+};
+
+export const refreshTokenSuccess = (token) => {
+  return {
+    type: AuthActionTypes.REFRESH_TOKEN_SUCCESS,
     payload: token,
   };
 };
 
-export const login =
-  ({ email, password }) =>
-  async (dispatch) => {
-    const data = await axios.post("http://13.250.46.59:8080/account/login", {
-      Username: email,
-      Password: password,
-    });
-    if (data?.status === 200 && data?.data?.accessToken && data.data.refreshToken) {
-      dispatch(
-        loginSuccess({ accessToken: data.data.accessToken, refreshToken: data.data.refreshToken })
-      );
-    }
-  };
+export const verifyCaptcha = (response) => async (dispatch) => {
+  const data = await authApi.verifyCaptcha(response);
+};
 
-export const refreshTokenSuccess = (accessToken) => {
+export const logoutStart = () => {
   return {
-    type: AuthActionTypes.REFRESH_TOKEN_SUCCESS,
-    payload: accessToken,
+    type: AuthActionTypes.LOGOUT_START,
   };
 };
 
-export const refreshToken = (refreshToken) => async (dispatch) => {
-  const data = await axios.post("http://13.250.46.59:8080/auth/refresh-token", {
-    refreshToken,
-  });
-
-  if (data?.status === 200 && data?.data?.accessToken) {
-    dispatch(refreshTokenSuccess(data.data.accessToken));
-  }
+export const logoutSuccess = () => {
+  return {
+    type: AuthActionTypes.LOGOUT_SUCCESS,
+  };
 };
 
-export const logout = () => {
-  return {
-    type: AuthActionTypes.LOGOUT,
-    payload: null,
-  };
+export const logout = (accessToken) => async (dispatch) => {
+  dispatch(logoutStart());
+  // const data = await authApi.logout();
+  dispatch(logoutSuccess());
 };

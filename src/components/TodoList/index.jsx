@@ -5,8 +5,7 @@ import { addTodo, fetchTodos } from "../../redux/actions/todoAction";
 import { v4 as uuidv4 } from "uuid";
 import { useHistory } from "react-router-dom";
 import { logout, refreshToken } from "redux/actions/authAction";
-
-TodoApp.propTypes = {};
+import { getAuth } from "redux/selectors/authSelector";
 
 function TodoApp() {
   const dispatch = useDispatch();
@@ -17,8 +16,8 @@ function TodoApp() {
 
   const [text, setText] = useState("");
 
-  const rt = useSelector((state) => state.authReducer.token.refreshToken);
-  const accessToken = useSelector((state) => state.authReducer.token.accessToken);
+  const rt = useSelector(getAuth).refreshToken;
+  const accessToken = useSelector(getAuth).accessToken;
 
   const fetchingTodos = useCallback(() => {
     dispatch(fetchTodos());

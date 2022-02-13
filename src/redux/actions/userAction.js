@@ -1,5 +1,5 @@
-import axios from 'axios';
-import { UserActionTypes } from './types/userActionTypes';
+import userApi from "apis/userApi";
+import { UserActionTypes } from "./types/user";
 
 export const fetchUserStart = () => ({
   type: UserActionTypes.FETCH_START,
@@ -17,14 +17,12 @@ export const fetchUserFailure = (errorMessage) => ({
   payload: errorMessage,
 });
 
-export const fetchUsersAsync = () => {
+export const fetchUsers = () => {
   return async (dispatch) => {
     dispatch(fetchUserStart());
     try {
-      const { data } = await axios.get(
-        'https://jsonplaceholder.typicode.com/users'
-      );
-      dispatch(fetchUserSuccess(data));
+      const users = await userApi.getAll();
+      dispatch(fetchUserSuccess(users));
     } catch (error) {
       dispatch(fetchUserFailure(error.errorMessage));
     }

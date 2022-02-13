@@ -1,9 +1,7 @@
 import React from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { getCount } from "redux/selectors/couterSelector";
+import { getCount } from "redux/selectors/counterSelector";
 import { decrement } from "../../redux/actions/counterAction";
-
-Counter.propTypes = {};
 
 function Counter(props) {
   const count = useSelector(getCount);

@@ -1,21 +1,23 @@
 import "./App.css";
-import { connect, useDispatch, useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import Counter from "./components/Counter";
 import { increment } from "./redux/actions/counterAction";
 import UserList from "./components/UserList";
 import "semantic-ui-css/semantic.min.css";
-import TodoApp from "./components/TodoApp";
+import TodoApp from "./components/TodoList";
 import { BrowserRouter as Router, Switch, Route, Link } from "react-router-dom";
 import Login from "./components/Login";
+import { getCount } from "redux/selectors/counterSelector";
+import { getAuth } from "redux/selectors/authSelector";
 
 function App(props) {
   const dispatch = useDispatch();
 
-  const countNumber = useSelector((state) => state.counterReducer.countNumber);
-  const auth = useSelector((state) => state.authReducer.token);
+  const count = useSelector(getCount);
 
+  const auth = useSelector(getAuth);
   const handleIncrementUseDispatch = () => {
-    dispatch(increment());
+    dispatch(increment(1));
   };
 
   return (
@@ -37,7 +39,7 @@ function App(props) {
         <Switch>
           <Route exact path="/counter">
             <div className="ui divider">
-              <h1 style={{ color: "orange" }}>Counter Parent useSelector: {countNumber}</h1>
+              <h1 style={{ color: "orange" }}>Counter Parent useSelector: {count}</h1>
               <button onClick={handleIncrementUseDispatch}>Increment Parent useDispatch</button>
               <Counter />
             </div>

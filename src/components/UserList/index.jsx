@@ -1,10 +1,7 @@
 import React, { useCallback, useEffect } from "react";
-import PropTypes from "prop-types";
-import { fetchUsersAsync } from "../../redux/actions/userAction";
-import { connect, useDispatch, useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
+import { fetchUsers } from "redux/actions/userAction";
 import { getAllUsers, getIsFetching } from "redux/selectors/userSelector";
-
-UserList.propTypes = {};
 
 function UserList(props) {
   const users = useSelector(getAllUsers);
@@ -12,13 +9,13 @@ function UserList(props) {
 
   const dispatch = useDispatch();
 
-  const fetchUsers = useCallback(() => {
-    dispatch(fetchUsersAsync());
+  const getUsers = useCallback(() => {
+    dispatch(fetchUsers());
   }, [dispatch]);
 
   useEffect(() => {
-    fetchUsers();
-  }, [fetchUsers]);
+    getUsers();
+  }, [getUsers]);
 
   return (
     <div className="ui segment container">

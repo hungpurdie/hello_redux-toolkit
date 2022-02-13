@@ -1,7 +1,7 @@
-import { CounterActionTypes } from '../actions/types/counterActionTypes';
+import { CounterActionTypes } from "redux/actions/types/counter";
 
 const initialState = {
-  countNumber: 0,
+  count: 0,
 };
 
 const counterReducer = (state = initialState, action) => {
@@ -9,14 +9,14 @@ const counterReducer = (state = initialState, action) => {
     case CounterActionTypes.INCREMENT: {
       return {
         ...state,
-        countNumber: state.countNumber + 1,
+        count: state.count + action.payload,
       };
     }
 
     case CounterActionTypes.DECREMENT: {
       return {
         ...state,
-        countNumber: state.countNumber - 1,
+        count: state.count - action.payload,
       };
     }
     default: {

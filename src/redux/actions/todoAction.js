@@ -1,5 +1,5 @@
-import axios from 'axios';
-import { TodoActionTypes } from './types/todoActionTypes';
+import todoApi from "apis/todoApi";
+import { TodoActionTypes } from "./types/todo";
 
 export const addTodo = (text) => {
   return {
@@ -16,8 +16,6 @@ export const setTodos = (items) => {
 };
 
 export const fetchTodos = () => async (dispatch) => {
-  const { data } = await axios.get(
-    'https://jsonplaceholder.typicode.com/todos'
-  );
+  const data = await todoApi.fetchTodos();
   dispatch(setTodos(data));
 };
