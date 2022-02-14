@@ -1,15 +1,19 @@
 import React, { useRef, useState } from "react";
 import GoogleLogin from "react-google-login";
 import ReCAPTCHA from "react-google-recaptcha";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { useHistory } from "react-router-dom/cjs/react-router-dom.min";
-import { login, loginByGoogle } from "../../redux/actions/authAction";
+import { getCaptcha } from "redux/selectors/authSelector";
+import { login, loginByGoogle, verifyCaptcha } from "../../redux/actions/authAction";
 
 function Login({ loginProps }) {
   const [email, setEmail] = useState("demo@demo.com");
   const [password, setPassword] = useState("123456");
   const [showPassword, setShowPassword] = useState(false);
   const refRecapCha = useRef();
+
+  const isHuman = useSelector(getCaptcha)?.success;
+  console.log("🚀 :: Login :: isHuman", isHuman);
 
   const history = useHistory();
 
@@ -27,12 +31,15 @@ function Login({ loginProps }) {
 
   const onLoginHandler = (e) => {
     e.preventDefault();
-    // const response = refRecapCha.current.getValue();
-    // if (response) {
-    //   dispatch(verifyCaptcha(response));
-    // }
-    dispatch(login({ email, password }));
-    history.push("/todo");
+    const response = refRecapCha.current.getValue();
+    if (response) {
+      debugger;
+      dispatch(verifyCaptcha(response));
+    }
+    if (isHuman) {
+      dispatch(login({ email, password }));
+      history.push("/todo");
+    }
   };
 
   return (

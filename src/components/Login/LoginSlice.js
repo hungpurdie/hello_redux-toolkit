@@ -126,6 +126,15 @@ const authReducer = (state = initialState, action) => {
           },
         },
       };
+    case AuthActionTypes.VERIFY_CAPTCHA_SUCCESS:
+      return {
+        ...state,
+        captcha: {
+          isFetching: false,
+          success: true,
+          message: null,
+        },
+      };
     default: {
       return state;
     }
