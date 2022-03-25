@@ -1,0 +1,64 @@
+# @baseUrl=https://api-starter.up.railway.app/api/v1
+@baseUrl=http://localhost:8000/api/v1/
+
+# @name checkStatus
+GET  {{baseUrl}} HTTP/1.1
+Content-Type: application/json
+
+###
+
+### Auth ###
+
+# @name register
+POST {{baseUrl}}/auth/register HTTP/1.1
+Content-Type: application/json
+
+{
+  "username": "abcde",
+  "email": "abcd@example.com",
+  "password": "123456"
+}
+
+###
+
+# @name login
+POST {{baseUrl}}/auth/login HTTP/1.1
+Content-Type: application/json
+
+{
+  "email": "abcd@example.com",
+  "password": "123456"
+}
+
+###
+
+# @name getListUser
+GET {{baseUrl}}/users HTTP/1.1
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2MjBjZTc3MzY4YmYzNjljNjBiYTM5ZDAiLCJpYXQiOjE2NDU4NjQ5MjksImV4cCI6MTY0NTg2NTUyOX0.-xhofNiuchloKRLXOklo84Orbjo1gGUHsInpcuNR2VE
+
+###
+
+# @name refreshToken
+
+POST {{baseUrl}}/auth/refresh-token HTTP/1.1
+Content-Type: application/json
+
+{
+  "refreshToken": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2MjBjZTc3MzY4YmYzNjljNjBiYTM5ZDAiLCJpYXQiOjE2NDgyMzM1NDUsImV4cCI6MTY0ODIzMzU5NX0.Za87PT4ROT_b417gVKk9quEMyFQJERcgcP0O6y0bMfw"
+}
+
+
+
+###
+
+# @name logout
+DELETE  {{baseUrl}}/auth/logout HTTP/1.1
+Content-Type: application/json
+
+{
+  "refreshToken": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2MjBjZTc3MzY4YmYzNjljNjBiYTM5ZDAiLCJpYXQiOjE2NDgyMzM1NDUsImV4cCI6MTY0ODIzMzU5NX0.Za87PT4ROT_b417gVKk9quEMyFQJERcgcP0O6y0bMfw"
+}
+
+
+### Login with Google
+GET {{baseUrl}}/auth/google HTTP/1.1
