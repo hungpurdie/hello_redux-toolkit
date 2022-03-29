@@ -23,7 +23,8 @@ export const getLogout = createAsyncThunk(
   logout.type,
   async (refreshToken, { rejectWithValue }) => {
     try {
-      await authApi.logout(refreshToken);
+      const data = await authApi.logout(refreshToken);
+      return data.message;
     } catch (error) {
       const { message, status } = error.response.data;
       if (status === 401) {
@@ -84,14 +85,14 @@ const authSlice = createSlice({
     builder.addCase(getLogout.pending, (state) => {
       state.isLoading = true;
     });
-    builder.addCase(getLogout.fulfilled, (state) => {
+    builder.addCase(getLogout.fulfilled, (state, action) => {
       state.isLoading = false;
       state.accessToken = null;
       state.refreshToken = null;
       state.message = null;
       state.isError = false;
       state.isAuthenticated = false;
-      showToast("success", "Logout successfully", toastPosition.topRight);
+      showToast("success", action.payload, toastPosition.topRight);
     });
     builder.addCase(getLogout.rejected, (state, action) => {
       state.isLoading = false;

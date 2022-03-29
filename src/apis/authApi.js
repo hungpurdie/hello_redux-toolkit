@@ -8,6 +8,14 @@ const authApi = {
       password: password,
     });
   },
+  register: ({ username, email, password }) => {
+    const url = "auth/register";
+    return axiosClient.post(url, {
+      username,
+      email,
+      password,
+    });
+  },
   loginWithGoogle: (tokenId) => {
     const url = "auth/login-by-google";
     return axiosClient.post(url, {

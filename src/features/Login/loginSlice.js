@@ -8,11 +8,12 @@ export const login = createAsyncThunk(
   async ({ email, password }, { rejectWithValue, dispatch }) => {
     try {
       const data = await authApi.login({ email, password });
-      const { accessToken, refreshToken } = data?.elements;
+      const { elements, message } = data;
       dispatch({
         type: saveToken.type,
-        payload: { accessToken, refreshToken },
+        payload: elements,
       });
+      return message;
     } catch (error) {
       const { message, status } = error?.response.data;
       if (message === "Unauthorized" && status === 401) {
@@ -46,7 +47,7 @@ const loginSlice = createSlice({
       state.isFetching = false;
       state.success = true;
       state.message = action.payload;
-      showToast("success", "Login successfully", toastPosition.topRight, {
+      showToast("success", action.payload, toastPosition.topRight, {
         pauseOnHover: false,
       });
     });

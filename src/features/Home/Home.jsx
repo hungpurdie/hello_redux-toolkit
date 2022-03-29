@@ -27,6 +27,9 @@ function Home() {
         <Button className=" item">
           <Link to="/todo">Todo App</Link>
         </Button>
+        <Button className=" item">
+          <Link to="/register">Register</Link>
+        </Button>
       </div>
       <div className="ui divider">
         <h1 style={{ color: "orange" }}>Counter Parent useSelector: {count}</h1>

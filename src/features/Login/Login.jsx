@@ -1,13 +1,13 @@
+import { LockOutlined, UserOutlined } from "@ant-design/icons";
+import { Button, Checkbox, Form, Input, Layout, Row } from "antd";
 import React, { useRef, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { Navigate, useNavigate } from "react-router-dom";
-import { Form, Input, Button, Checkbox, Row, Layout } from "antd";
-import "./login.css";
+import { Link, Navigate, useNavigate } from "react-router-dom";
 import { getAuthenticated } from "../../store/selectors/authSelector";
 import { getCaptcha } from "../../store/selectors/captchaSelector";
 import { getErrorMessage } from "../../store/selectors/loginSelector";
+import "./login.css";
 import { login } from "./loginSlice";
-
 const { Header, Footer, Content } = Layout;
 
 function Login({ loginProps }) {
@@ -33,65 +33,75 @@ function Login({ loginProps }) {
     navigate("/todo");
   };
 
-  const onFinishFailed = (errorInfo) => {
-    console.log("Failed:", errorInfo);
-  };
   return isAuthenticated ? (
     <Navigate to="/" replace />
   ) : (
-    <div>
+    <>
       <Layout>
         <Header>Login page</Header>
         <Content>
           <Row justify="center" align="middle">
             <Form
+              name="normal_login"
               className="login-form"
-              name="basic"
-              labelCol={{ span: 8 }}
-              wrapperCol={{ span: 16 }}
-              initialValues={{ remember: true }}
+              initialValues={{
+                remember: true,
+              }}
               onFinish={onFinish}
-              onFinishFailed={onFinishFailed}
-              autoComplete="off"
             >
               <Form.Item
-                label="Email"
                 name="email"
-                defaultValue="abc@example.com"
+                initialValue="abcd@example.com"
                 rules={[
-                  { required: true, message: "Please input your email!", type: "email", len: 15 },
+                  {
+                    required: true,
+                    message: "Please input your Email!",
+                    len: [15, 100],
+                  },
                 ]}
               >
-                <Input />
+                <Input
+                  prefix={<UserOutlined className="site-form-item-icon" />}
+                  placeholder="Email"
+                />
               </Form.Item>
-
               <Form.Item
-                label="Password"
                 name="password"
-                defaultValue="123456"
-                rules={[{ required: true, message: "Please input your password!" }]}
+                initialValue="123456"
+                rules={[
+                  {
+                    required: true,
+                    message: "Please input your Password!",
+                  },
+                ]}
               >
-                <Input.Password />
+                <Input
+                  prefix={<LockOutlined className="site-form-item-icon" />}
+                  type="password"
+                  placeholder="Password"
+                />
+              </Form.Item>
+              <Form.Item>
+                <Form.Item name="remember" valuePropName="checked" noStyle>
+                  <Checkbox>Remember me</Checkbox>
+                </Form.Item>
+
+                <Link className="login-form-forgot" to="/forgot-password">
+                  Forgot password
+                </Link>
               </Form.Item>
 
-              <Form.Item
-                name="remember"
-                valuePropName="checked"
-                wrapperCol={{ offset: 8, span: 16 }}
-              >
-                <Checkbox>Remember me</Checkbox>
-              </Form.Item>
-
-              <Form.Item wrapperCol={{ offset: 8, span: 16 }}>
-                <Button type="primary" htmlType="submit">
-                  Submit
+              <Form.Item>
+                <Button type="primary" htmlType="submit" className="login-form-button">
+                  Log in
                 </Button>
+                Or <Link to="/register">register now!</Link>
               </Form.Item>
             </Form>
           </Row>
         </Content>
       </Layout>
-    </div>
+    </>
   );
 }
 

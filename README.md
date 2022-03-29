@@ -1,1 +1,4 @@
-# hello_redux
+# Hello Redux
+
+- Redux: counter
+- Redux thunk: UserList
